@@ -1,0 +1,1 @@
+resource "" "wireguard_server"
