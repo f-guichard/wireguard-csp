@@ -1,0 +1,32 @@
+---
+resources:
+        - name: hybridation-cfmix
+            type: git
+              icon: github
+                source:
+                            uri: https://github.com/f-guichard/wireguard-csp
+
+        - name: bbl
+            type: git
+              icon: github
+                source:
+                            uri: https://github.com/cloudfoundry/bosh-bootloader
+                            jobs:
+                                    - name: job
+                                        public: true
+                                          plan:
+                                                    - get: hybridation-cfmix
+                                                          trigger: true
+                                                            - get: bbl
+                                                                - task: bbl-up
+                                                                      config:
+                                                                                    inputs:
+                                                                                                    - name: hybridation-cfmix
+                                                                                                                - name: bbl
+                                                                                                                        platform: linux
+                                                                                                                              image_resource:
+                                                                                                                                              type: registry-image
+                                                                                                                                                      source: { repository: busybox }
+                                                                                                                                                            run:
+                                                                                                                                                                            path: ls
+                                                                                                                                                                                    args: ["-la", "./hybridation-cfmix", "./bbl" ]
